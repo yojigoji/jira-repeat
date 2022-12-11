@@ -1,0 +1,102 @@
+import { Fragment, useState } from 'react'
+import { get } from 'lodash'
+import { sortByNewest } from '../../shared/utils/javascript'
+import {
+  IssueSearch,
+  SearchInputCont,
+  SearchInputDebounced,
+  SearchIcon,
+  SearchSpinner,
+  Issue,
+  IssueData,
+  IssueTitle,
+  IssueTypeId,
+  SectionTitle,
+  NoResults,
+  NoResultsTitle,
+  NoResultsTip
+} from './Styles'
+import { Link } from 'react-router-dom'
+import IssueTypeIcon from '../../shared/components/IssueTypeIcon'
+import NoResultsSVG from './NoResultsSvg'
+import useApi from '../../shared/hooks/api'
+
+interface ProjectIssueSearchProps {
+  project: any
+}
+
+const ProjectIssueSearch = ({ project }: ProjectIssueSearchProps) => {
+  const [isSearchTermEmpty, setIsSearchTermEmpty] = useState(true)
+
+  const [{ data, isLoading }, fetchIssues] = useApi.get(
+    '/issues',
+    {},
+    { lazy: true }
+  )
+
+  const matchingIssues = get(data, 'issues', [])
+
+  const recentIssues = sortByNewest(project.issues, 'createdAt').slice(0, 10)
+
+  const handleSearchChange = (value: string) => {
+    const searchTerm = value.trim()
+
+    setIsSearchTermEmpty(!searchTerm)
+
+    if (searchTerm) {
+      fetchIssues({ searchTerm })
+    }
+  }
+
+  return (
+    <IssueSearch>
+      <SearchInputCont>
+        <SearchInputDebounced
+          autoFocus
+          placeholder="Search issues by summary, description..."
+          onChange={handleSearchChange}
+        />
+        <SearchIcon type="search" size={22} />
+        {isLoading && <SearchSpinner />}
+      </SearchInputCont>
+
+      {isSearchTermEmpty && recentIssues.length > 0 && (
+        <Fragment>
+          <SectionTitle>Recent Issues</SectionTitle>
+          {recentIssues.map(renderIssue)}
+        </Fragment>
+      )}
+
+      {!isSearchTermEmpty && matchingIssues.length > 0 && (
+        <Fragment>
+          <SectionTitle>Matching Issues</SectionTitle>
+          {matchingIssues.map(renderIssue)}
+        </Fragment>
+      )}
+
+      {!isSearchTermEmpty && !isLoading && matchingIssues.length === 0 && (
+        <NoResults>
+          <NoResultsSVG />
+          <NoResultsTitle>
+            We couldn&apos;t find anything matching your search
+          </NoResultsTitle>
+          <NoResultsTip>Try again with a different term.</NoResultsTip>
+        </NoResults>
+      )}
+    </IssueSearch>
+  )
+}
+
+const renderIssue = (issue: any) => (
+  <Link key={issue.id} to={`/project/board/issues/${issue.id}`}>
+    <Issue>
+      <IssueTypeIcon type={issue.type} />
+      <IssueData>
+        <IssueTitle>{issue.title}</IssueTitle>
+        <IssueTypeId>{`${issue.type}-${issue.id}`}</IssueTypeId>
+      </IssueData>
+    </Issue>
+  </Link>
+)
+
+export default ProjectIssueSearch
