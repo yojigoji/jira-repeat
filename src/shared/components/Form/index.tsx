@@ -1,17 +1,15 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import { Formik, Form as FormikForm, Field as FormikField } from 'formik'
 import { get, mapValues } from 'lodash'
 
-import toast from 'shared/utils/toast'
-import { is, generateErrors } from 'shared/utils/validation'
+import toast from '@/shared/utils/toast'
+import { is, generateErrors } from '@/shared/utils/validation'
 
 import Field from './Field'
 
-const propTypes = {
-  validate: PropTypes.func,
-  validations: PropTypes.object,
-  validateOnBlur: PropTypes.bool
+interface FormProps {
+  validate?: () => {}
+  validations?: object
+  validateOnBlur?: boolean
 }
 
 const defaultProps = {
@@ -20,7 +18,7 @@ const defaultProps = {
   validateOnBlur: false
 }
 
-const Form = ({ validate, validations, ...otherProps }) => (
+const Form = ({ validate, validations, ...otherProps }: FormProps) => (
   <Formik
     {...otherProps}
     validate={(values) => {
@@ -72,7 +70,6 @@ Form.handleAPIError = (error, form) => {
 
 Form.is = is
 
-Form.propTypes = propTypes
 Form.defaultProps = defaultProps
 
 export default Form
