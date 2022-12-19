@@ -9,7 +9,7 @@ const Input = forwardRef(
   ) => {
     const handleChange = (event: any) => {
       if (!filter || filter.test(event.target.value)) {
-        onChange(event.target.value, event)
+        onChange && onChange(event.target.value, event)
       }
     }
 

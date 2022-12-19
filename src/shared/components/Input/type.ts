@@ -7,7 +7,7 @@ interface InputProps
   icon?: keyof typeof FontIconCodes
   invalid?: boolean
   filter?: RegExp
-  onChange: (a: any, event: any) => void
+  onChange?: (a: any, event: any) => void
 }
 
 export type { InputProps }
