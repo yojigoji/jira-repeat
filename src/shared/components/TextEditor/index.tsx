@@ -9,8 +9,8 @@ interface TextEditorProps {
   placeholder?: string
   defaultValue?: string
   value?: string
-  onChange: (...args: any) => void
-  getEditor: (...arg: any) => void
+  onChange?: (...args: any) => void
+  getEditor?: (...arg: any) => void
 }
 
 const TextEditor = ({
@@ -36,13 +36,13 @@ const TextEditor = ({
       quill.blur()
     }
     const handleContentsChange = () => {
-      onChange(getHTMLValue())
+      onChange && onChange(getHTMLValue())
     }
     const getHTMLValue = () =>
       $editorContRef.current.querySelector('.ql-editor').innerHTML
 
     insertInitialValue()
-    getEditor({ getValue: getHTMLValue })
+    getEditor && getEditor({ getValue: getHTMLValue })
 
     quill.on('text-change', handleContentsChange)
     return () => {

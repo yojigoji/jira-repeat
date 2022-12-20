@@ -1,6 +1,6 @@
 import styled from "styled-components"
-import Button from "../../shared/components/Button"
 import { font } from "../../shared/utils/styles"
+import { Button, Form } from "@/shared/components"
 
 export const FormCont = styled.div`
   display: flex;
@@ -18,6 +18,6 @@ export const FormHeading = styled.h1`
   ${font.medium}
 `
 
-export const ActionButton = styled(Button)`
+export const ActionButton = styled(Button)<{type: any}>`
   margin-top: 30px;
 `

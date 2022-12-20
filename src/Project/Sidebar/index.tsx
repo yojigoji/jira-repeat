@@ -3,6 +3,7 @@ import {
   useLocation,
   useMatch,
   useNavigate,
+  useResolvedPath,
   useRoutes
 } from 'react-router-dom'
 import { Icon } from '../../shared/components'
@@ -21,7 +22,7 @@ import {
 } from './Styles'
 
 const ProjectSidebar = ({ project }: { project: any }) => {
-  const location = useLocation()
+  const { pathname } = useResolvedPath('')
 
   return (
     <Sidebar>
@@ -40,19 +41,14 @@ const ProjectSidebar = ({ project }: { project: any }) => {
         </ProjectTexts>
       </ProjectInfo>
 
-      {renderLinkItem(location.pathname, 'Kanban Board', 'board', '/board')}
-      {renderLinkItem(
-        location.pathname,
-        'Project settings',
-        'settings',
-        '/settings'
-      )}
+      {renderLinkItem(pathname, 'Kanban Board', 'board', '/board')}
+      {renderLinkItem(pathname, 'Project settings', 'settings', '/settings')}
       <Divider />
-      {renderLinkItem(location.pathname, 'Releases', 'shipping')}
-      {renderLinkItem(location.pathname, 'Issues and filters', 'issues')}
-      {renderLinkItem(location.pathname, 'Pages', 'page')}
-      {renderLinkItem(location.pathname, 'Reports', 'reports')}
-      {renderLinkItem(location.pathname, 'Components', 'component')}
+      {renderLinkItem(pathname, 'Releases', 'shipping')}
+      {renderLinkItem(pathname, 'Issues and filters', 'issues')}
+      {renderLinkItem(pathname, 'Pages', 'page')}
+      {renderLinkItem(pathname, 'Reports', 'reports')}
+      {renderLinkItem(pathname, 'Components', 'component')}
     </Sidebar>
   )
 }
@@ -70,13 +66,11 @@ const renderLinkItem = (
     : { as: 'div' }
 
   return (
-    <div {...linkItemProps}>
-      <LinkItem to={`${path}` || 'false'}>
-        <Icon type={iconType} />
-        <LinkText>{text}</LinkText>
-        {!isImplemented && <NotImplemented>Not implemented</NotImplemented>}
-      </LinkItem>
-    </div>
+    <LinkItem {...(linkItemProps as any)}>
+      <Icon type={iconType} />
+      <LinkText>{text}</LinkText>
+      {!isImplemented && <NotImplemented>Not implemented</NotImplemented>}
+    </LinkItem>
   )
 }
 

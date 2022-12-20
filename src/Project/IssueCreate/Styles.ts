@@ -12,7 +12,7 @@ export const FormHeading = styled.div`
   ${font.size(21)}
 `
 
-export const SelectItem = styled.div<{ withBottomMargin: boolean }>`
+export const SelectItem = styled.div<{ withBottomMargin?: boolean }>`
   display: flex;
   align-items: center;
   margin-right: 15px;
@@ -34,6 +34,6 @@ export const Actions = styled.div`
   padding-top: 30px;
 `
 
-export const ActionButton = styled(Button)`
+export const ActionButton = styled(Button)<{type: any}>`
   margin-left: 10px;
 `

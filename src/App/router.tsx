@@ -8,7 +8,7 @@ const router = createBrowserRouter([
     errorElement: <div>it is error</div>
   },
   {
-    path: '/project',
+    path: '/project/*',
     element: <Project />,
     errorElement: <div>it is error</div>
   },
@@ -16,6 +16,10 @@ const router = createBrowserRouter([
     path: '/',
     element: <div>project</div>
   }
+  // {
+  //   path: '/project/board',
+  //   element: <div>123 router board</div>
+  // }
 ])
 
 export default router

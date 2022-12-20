@@ -8,9 +8,18 @@ import project from '../App/assets/mock-data/project.json'
 import { createQueryParamModalHelpers } from '../shared/utils/queryParamModal'
 import { Modal } from '../shared/components'
 import IssueSearch from './IssueSearch'
-import { divide } from 'lodash'
+import IssueCreate from './IssueCreate'
+import {
+  Router,
+  useLocation,
+  useResolvedPath,
+  useRoutes
+} from 'react-router-dom'
+import ProjectSettings from './ProjectSetting'
 
 const Project = () => {
+  const location = useLocation()
+
   const issueSearchModalHelpers = createQueryParamModalHelpers('issue-search')
   const issueCreateModalHelpers = createQueryParamModalHelpers('issue-create')
 
@@ -21,7 +30,6 @@ const Project = () => {
         issueCreateModalOpen={issueCreateModalHelpers.open}
       />
       <Sidebar project={project.project} />
-
       {issueSearchModalHelpers.isOpen() && (
         <Modal
           isOpen
@@ -32,7 +40,6 @@ const Project = () => {
           renderContent={() => <IssueSearch project={project.project} />}
         />
       )}
-
       {issueCreateModalHelpers.isOpen() && (
         <Modal
           isOpen
@@ -40,11 +47,46 @@ const Project = () => {
           width={800}
           withCloseIcon={false}
           onClose={issueCreateModalHelpers.close}
-          renderContent={(modal) => <div>123</div>}
+          renderContent={(modal) => (
+            <IssueCreate
+              project={project.project}
+              fetchProject={() => {
+                console.log('fetch project')
+              }}
+              onCreate={() => {
+                console.log('on create')
+              }}
+              modalClose={modal.close}
+            />
+          )}
         />
       )}
+
+      <ProjectRoutes />
     </ProjectPage>
   )
+}
+
+const ProjectRoutes = () => {
+  let routes = useRoutes([
+    {
+      path: 'board',
+      element: <div>123 board 13</div>
+    },
+    {
+      path: 'settings',
+      element: (
+        <ProjectSettings
+          project={project.project}
+          fetchProject={() => {
+            console.log('it is fetch Project')
+          }}
+        ></ProjectSettings>
+      )
+    }
+  ])
+
+  return routes
 }
 
 export default Project
