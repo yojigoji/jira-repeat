@@ -27,7 +27,7 @@ const Button = forwardRef(
       isWorking,
       onClick,
       ...buttonProps
-    }: ButtonProps,
+    }: ButtonProps & any,
     ref: any
   ) => {
     const handleClick = () => {

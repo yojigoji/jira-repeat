@@ -16,6 +16,7 @@ import {
   useRoutes
 } from 'react-router-dom'
 import ProjectSettings from './ProjectSetting'
+import Board from './Board'
 
 const Project = () => {
   const location = useLocation()
@@ -71,7 +72,17 @@ const ProjectRoutes = () => {
   let routes = useRoutes([
     {
       path: 'board',
-      element: <div>123 board 13</div>
+      element: (
+        <Board
+          project={project.project}
+          fetchProject={() => {
+            console.log('fetch projects')
+          }}
+          updateLocalProjectIssues={() => {
+            console.log('updateLocalProjectIssues')
+          }}
+        ></Board>
+      )
     },
     {
       path: 'settings',
