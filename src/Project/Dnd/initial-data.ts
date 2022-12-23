@@ -1,3 +1,6 @@
+export type Columns = keyof typeof initialData.columns
+export type Tasks = keyof typeof initialData.tasks
+
 const initialData = {
   tasks: {
     'task-1': { id: 'task-1', content: 'Take out the garbage' },
