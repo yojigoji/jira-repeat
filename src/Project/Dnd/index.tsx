@@ -3,6 +3,7 @@ import Column from './Column'
 
 import {
   DragDropContext,
+  Droppable,
   DragStart,
   DragUpdate,
   DropResult
@@ -20,7 +21,7 @@ const Dnd = () => {
   const onDragEnd = (result: DropResult) => {
     document.body.style.color = 'inherit'
     document.body.style.backgroundColor = 'inherit'
-    const { destination, source, draggableId } = result
+    const { destination, source, draggableId, type } = result
     console.log('123', result)
 
     if (!destination) {
@@ -31,6 +32,20 @@ const Dnd = () => {
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) {
+      return
+    }
+
+    if (type === 'column') {
+      const newColumnOrder = Array.from(data.columnOrder)
+      newColumnOrder.splice(source.index, 1)
+      newColumnOrder.splice(destination.index, 0, draggableId as any)
+
+      const newState = {
+        ...data,
+        columnOrder: newColumnOrder
+      }
+
+      setData(newState)
       return
     }
 
@@ -87,8 +102,7 @@ const Dnd = () => {
   }
 
   const onDragStart = (start: DragStart) => {
-    document.body.style.color = 'orange'
-    document.body.style.transition = 'background-color 0.2s ease'
+    const homeIndex = data.columnOrder.indexOf(start.source.droppableId as any)
   }
 
   const onDragUpdate = (update: DragUpdate) => {
@@ -105,21 +119,29 @@ const Dnd = () => {
       onDragUpdate={onDragUpdate}
       onDragEnd={onDragEnd}
     >
-      <Container>
-        {data.columnOrder.map((columnId) => {
-          const column = data.columns[columnId]
-          const tasks = column.taskIds.map((taskId) => data.tasks[taskId])
+      <Droppable droppableId="all-column" direction="horizontal" type="column">
+        {(provided) => (
+          <Container {...provided.droppableProps} ref={provided.innerRef}>
+            {data.columnOrder.map((columnId, index) => {
+              const column = data.columns[columnId as Columns]
+              const tasks = column.taskIds.map(
+                (taskId: Tasks) => data.tasks[taskId]
+              )
 
-          return (
-            <Column
-              title={column.title}
-              key={column.id}
-              id={column.id}
-              tasks={tasks}
-            ></Column>
-          )
-        })}
-      </Container>
+              return (
+                <Column
+                  title={column.title}
+                  key={column.id}
+                  id={column.id}
+                  tasks={tasks}
+                  index={index}
+                />
+              )
+            })}
+            {provided.placeholder}
+          </Container>
+        )}
+      </Droppable>
     </DragDropContext>
   )
 }

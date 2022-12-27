@@ -25,8 +25,9 @@ const initialData = {
       taskIds: []
     }
   },
-  columnOrder: ['column-1', 'column-2', 'column-3'] as const
+  columnOrder: ['column-1', 'column-2', 'column-3']
 }
+
 
 export default initialData
 
