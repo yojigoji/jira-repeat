@@ -1,11 +1,10 @@
 import type { Filters } from '@/Project/Board/index'
-import type { Issue } from '@/Project/Board/Lists/List/Issue/types'
+import type { IssueType } from '@/Project/Board/Lists/List/Issue/types'
 import { intersection } from 'lodash'
 import moment from 'moment'
 import { Issues, IssuesCount, List, Title } from './Styles'
 import { Droppable } from 'react-beautiful-dnd'
 import { IssueStatusCopy } from '@/shared/constants/issues'
-import { Filters } from '../../Filters/Styles'
 
 interface ProjectBoardListProps {
   status: string
@@ -52,7 +51,7 @@ const ProjectBoardList = ({
 }
 
 const filterIssues = (
-  projectIssues: Issue[],
+  projectIssues: IssueType[],
   filters: Filters,
   currentUserId: string
 ) => {
