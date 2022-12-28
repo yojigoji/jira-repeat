@@ -10,6 +10,13 @@ interface ProjectBoardProps {
   updateLocalProjectIssues: any
 }
 
+export interface Filters {
+  searchTerm: string
+  userIds: string[]
+  myOnly: boolean
+  recent: boolean
+}
+
 const defaultFilters = {
   searchTerm: '',
   userIds: [],

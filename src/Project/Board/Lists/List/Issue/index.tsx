@@ -1,19 +1,19 @@
 import { Draggable } from 'react-beautiful-dnd'
-
-import { IssueTypeIcon, IssuePriorityIcon } from '@/shared/components'
-
+import type { IssueType } from './types'
 import {
-  IssueLink,
-  Issue,
-  Title,
-  Bottom,
+  AssigneeAvatar,
   Assignees,
-  AssigneeAvatar
+  Bottom,
+  Issue,
+  IssueLink,
+  Title
 } from './Styles'
+import { useResolvedPath } from 'react-router-dom'
+import { IssuePriorityIcon, IssueTypeIcon } from '@/shared/components'
 
 interface ProjectBoardListIssueProps {
   projectUsers: any[]
-  issue: any
+  issue: IssueType
   index: number
 }
 
@@ -22,7 +22,9 @@ const ProjectBoardListIssue = ({
   issue,
   index
 }: ProjectBoardListIssueProps) => {
-  const assignees = issue.userIds.map((userId: string) =>
+  const { pathname } = useResolvedPath('')
+
+  const assignees = issue.userIds.map((userId) =>
     projectUsers.find((user) => user.id === userId)
   )
 
@@ -30,9 +32,8 @@ const ProjectBoardListIssue = ({
     <Draggable draggableId={issue.id.toString()} index={index}>
       {(provided, snapshot) => (
         <IssueLink
-          to={`${match.url}/issues/${issue.id}`}
+          to={`${pathname}/issues/${issue.id}`}
           ref={provided.innerRef}
-          data-testid="list-issue"
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
@@ -50,7 +51,7 @@ const ProjectBoardListIssue = ({
                 />
               </div>
               <Assignees>
-                {assignees.map((user: any) => (
+                {assignees.map((user) => (
                   <AssigneeAvatar
                     key={user.id}
                     size={24}
@@ -66,3 +67,5 @@ const ProjectBoardListIssue = ({
     </Draggable>
   )
 }
+
+export default ProjectBoardListIssue

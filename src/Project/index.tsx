@@ -75,16 +75,16 @@ const ProjectRoutes = () => {
     {
       path: 'board',
       element: (
-        // <Board
-        //   project={project.project}
-        //   fetchProject={() => {
-        //     console.log('fetch projects')
-        //   }}
-        //   updateLocalProjectIssues={() => {
-        //     console.log('updateLocalProjectIssues')
-        //   }}
-        // ></Board>
-        <Dnd></Dnd>
+        <Board
+          project={project.project}
+          fetchProject={() => {
+            console.log('fetch projects')
+          }}
+          updateLocalProjectIssues={() => {
+            console.log('updateLocalProjectIssues')
+          }}
+        ></Board>
+        // <Dnd></Dnd>
       )
     },
     {
