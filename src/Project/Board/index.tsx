@@ -3,6 +3,7 @@ import { Fragment } from 'react'
 import Header from './Header'
 import Filters from './Filters'
 import useMergeState from '@/shared/hooks/useMergeState'
+import Lists from './Lists'
 
 interface ProjectBoardProps {
   project: any
@@ -41,6 +42,13 @@ const ProjectBoard = ({
         filters={filters}
         mergeFilters={mergeFilters}
       />
+      <Lists
+        project={project}
+        filters={filters}
+        updateLocalProjectIssues={() => {
+          console.log('updateLocalProjectIssues')
+        }}
+      ></Lists>
     </Fragment>
   )
 }

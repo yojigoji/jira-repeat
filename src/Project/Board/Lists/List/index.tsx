@@ -5,12 +5,13 @@ import moment from 'moment'
 import { Issues, IssuesCount, List, Title } from './Styles'
 import { Droppable } from 'react-beautiful-dnd'
 import { IssueStatusCopy } from '@/shared/constants/issues'
+import Issue from './Issue'
 
 interface ProjectBoardListProps {
   status: string
   project: any
   filters: Filters
-  currentUserId: string
+  currentUserId: number
 }
 
 const ProjectBoardList = ({
@@ -40,7 +41,7 @@ const ProjectBoardList = ({
                 projectUsers={project.users}
                 issue={issue}
                 index={index}
-              ></Issue>
+              />
             ))}
             {provided.placeholder}
           </Issues>
@@ -53,7 +54,7 @@ const ProjectBoardList = ({
 const filterIssues = (
   projectIssues: IssueType[],
   filters: Filters,
-  currentUserId: string
+  currentUserId: number
 ) => {
   const { searchTerm, userIds, myOnly, recent } = filters
   let issues = projectIssues
@@ -69,7 +70,9 @@ const filterIssues = (
     )
   }
   if (myOnly && currentUserId) {
-    issues = issues.filter((issue) => issue.userIds.includes(currentUserId))
+    issues = issues.filter((issue) =>
+      issue.userIds.includes(currentUserId.toString())
+    )
   }
   if (recent) {
     issues = issues.filter((issue) =>
@@ -80,14 +83,14 @@ const filterIssues = (
   return issues
 }
 
-const getSortedListIssues = (issues: Issue[], status: string) =>
+const getSortedListIssues = (issues: IssueType[], status: string) =>
   issues
     .filter((issue) => issue.status === status)
     .sort((a, b) => a.listPosition - b.listPosition)
 
 const formatIssuesCount = (
-  allListIssues: Issue[],
-  filteredListIssues: Issue[]
+  allListIssues: IssueType[],
+  filteredListIssues: IssueType[]
 ) => {
   if (allListIssues.length !== filteredListIssues.length) {
     return `${filteredListIssues.length} of ${allListIssues.length}`
